@@ -12,7 +12,7 @@ pipeline {
 
         string(name: 'SCANOSS_CLI_DOCKER_IMAGE', defaultValue:"ghcr.io/scanoss/scanoss-py:v1.9.0", description: 'SCANOSS CLI Docker Image')    
 
-
+    
         // JIRA Variables
         string(name: 'JIRA_URL', defaultValue:"https://scanoss.atlassian.net/" , description: 'Jira URL')
 
@@ -111,6 +111,9 @@ pipeline {
             }
         }
         stage('Scan') {
+            environment {
+                    SCANOSS_API_URL = "https://osskb.org/api/scan/direct"
+            }
             agent {
                 docker {
                     image params.SCANOSS_CLI_DOCKER_IMAGE
