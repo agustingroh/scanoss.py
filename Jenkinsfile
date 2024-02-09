@@ -1,13 +1,17 @@
 pipeline {
     parameters {
-        // SCAN Variables
-        string(name: 'SCANOSS_API_TOKEN_ID', defaultValue:"scanoss-token", description: 'The reference ID for the SCANOSS API TOKEN credential')
 
-        string(name: 'SCANOSS_SBOM_IDENTIFY', defaultValue:"SBOM.json", description: 'SCANOSS SBOM Identify filename')
+        // SCAN Variables
+        string(name: 'SCANOSS_API_TOKEN_ID', defaultValue:"scanoss-api-token-id", description: 'The reference ID for the SCANOSS API TOKEN credential')
+
+        string(name: 'SCANOSS_SBOM_IDENTIFY', defaultValue:"sbom.json", description: 'SCANOSS SBOM Identify filename')
 
         string(name: 'SCANOSS_SBOM_IGNORE', defaultValue:"sbom-ignore.json", description: 'SCANOSS SBOM Ignore filename')
 
         booleanParam(name: 'ENABLE_DELTA_ANALYSIS', defaultValue: false, description: 'Analyze those files what have changed or new ones')
+
+        string(name: 'SCANOSS_CLI_DOCKER_IMAGE', defaultValue:"ghcr.io/scanoss/scanoss-py:v1.9.0", description: 'SCANOSS CLI Docker Image')    
+
 
         // JIRA Variables
         string(name: 'JIRA_URL', defaultValue:"https://scanoss.atlassian.net/" , description: 'Jira URL')
@@ -109,7 +113,7 @@ pipeline {
         stage('Scan') {
             agent {
                 docker {
-                    image 'ghcr.io/scanoss/scanoss-py:v1.9.0'
+                    image params.SCANOSS_CLI_DOCKER_IMAGE
                     args '--entrypoint='
                     // Run the container on the node specified at the
                     // top-level of the Pipeline, in the same workspace,
