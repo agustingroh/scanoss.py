@@ -16,7 +16,7 @@ pipeline {
 
         string(name: 'JIRA_PROJECT_KEY', defaultValue:"TESTPROJ" , description: 'Jira Project Key')
 
-        booleanParam(name: 'CREATE_JIRA_ISSUE', defaultValue: false, description: 'Enable Jira reporting')
+        booleanParam(name: 'CREATE_JIRA_ISSUE', defaultValue: true, description: 'Enable Jira reporting')
 
         booleanParam(name: 'ABORT_ON_POLICY_FAILURE', defaultValue: false, description: 'Abort Pipeline on pipeline Failure')
 
@@ -57,7 +57,6 @@ pipeline {
 
                 script {
 
-                    echo "ENABLE_DELTA_ANALYSIS parameter value: ${params.ENABLE_DELTA_ANALYSIS.getClass()}"
 
                     if (params.ENABLE_DELTA_ANALYSIS == true) {
 
@@ -203,7 +202,11 @@ pipeline {
                  withCredentials([usernamePassword(credentialsId: 'jira-token',usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     script {
 
-                        if ((params.CREATE_JIRA_ISSUE == true) &&  (env.check_result == '0')) {
+                           echo 'CREATE JIRA ISSUE'
+                           echo "CREATE_JIRA_ISSUE: ${params.CREATE_JIRA_ISSUE}"
+                           echo "check_result: ${env.check_result}"
+
+                        if ((params.CREATE_JIRA_ISSUE == true) &&  (env.check_result != '0')) {
 
 
                             echo "JIRA issue parameter value: ${params.CREATE_JIRA_ISSUE}"
