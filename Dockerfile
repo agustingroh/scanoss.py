@@ -47,6 +47,11 @@ ENV GRPC_POLL_STRATEGY=poll
 VOLUME /scanoss
 WORKDIR /scanoss
 
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends jq \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Run scancode once to setup any initial files, etc. so that it'll run faster later
 RUN scancode -p --only-findings --quiet --json /scanoss/scancode-dependencies.json /scanoss && rm -f /scanoss/scancode-dependencies.json
 

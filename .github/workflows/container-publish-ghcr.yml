@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: scanoss/scanoss-py
+  IMAGE_NAME: agustingroh/scanoss-py
 
 jobs:
   deploy:
